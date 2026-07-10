@@ -32,7 +32,7 @@ export function boot(): void {
   const footer = el(
     'footer',
     { className: 'app-footer' },
-    'WebProbe — local browser exploration. No data leaves your device.',
+    'WebProbe — local browser exploration. Public IP lookup uses api.ipify.org on My Browser only.',
   );
 
   const shell = el('div', { className: 'app-shell' }, skipLink, header, main, footer);

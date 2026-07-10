@@ -12,7 +12,8 @@ export function render(container: HTMLElement): () => void {
   );
 
   const grid = el('section', { className: 'card-grid' });
-  container.append(grid);
+  const loading = el('p', { className: 'loading-state' }, 'Loading capabilities…');
+  container.append(loading, grid);
 
   void (async () => {
     for (const cap of capabilities) {
@@ -36,6 +37,7 @@ export function render(container: HTMLElement): () => void {
       );
       grid.append(card);
     }
+    loading.remove();
   })();
 
   return () => container.replaceChildren();

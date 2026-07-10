@@ -2,7 +2,7 @@ import { el } from '../../shared/dom.ts';
 import { renderPageHeader } from '../../components/page-header.ts';
 import { catalog } from '../catalog.ts';
 import { LINK_CATEGORIES } from '../types.ts';
-import { getRouteQuery } from '../../app/route-utils.ts';
+import { getRouteQuery, replaceRouteQuery } from '../../app/route-utils.ts';
 
 export function render(container: HTMLElement): () => void {
   const query = getRouteQuery();
@@ -39,6 +39,17 @@ export function render(container: HTMLElement): () => void {
   const list = el('section', { className: 'card-grid' });
 
   container.append(filterBar, list);
+
+  let searchDebounce: ReturnType<typeof setTimeout> | null = null;
+
+  const syncUrl = () => {
+    const params = new URLSearchParams();
+    const term = searchInput.value.trim();
+    const category = categorySelect.value;
+    if (term) params.set('q', term);
+    if (category) params.set('category', category);
+    replaceRouteQuery(params);
+  };
 
   const renderList = () => {
     const term = searchInput.value.toLowerCase();
@@ -102,9 +113,36 @@ export function render(container: HTMLElement): () => void {
     }
   };
 
-  searchInput.addEventListener('input', renderList);
-  categorySelect.addEventListener('change', renderList);
+  const onSearchInput = () => {
+    if (searchDebounce) clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => {
+      syncUrl();
+      renderList();
+    }, 300);
+  };
+
+  const onCategoryChange = () => {
+    syncUrl();
+    renderList();
+  };
+
+  const onPopState = () => {
+    const q = getRouteQuery();
+    searchInput.value = q.get('q') ?? '';
+    categorySelect.value = q.get('category') ?? '';
+    renderList();
+  };
+
+  searchInput.addEventListener('input', onSearchInput);
+  categorySelect.addEventListener('change', onCategoryChange);
+  window.addEventListener('popstate', onPopState);
   renderList();
 
-  return () => container.replaceChildren();
+  return () => {
+    if (searchDebounce) clearTimeout(searchDebounce);
+    searchInput.removeEventListener('input', onSearchInput);
+    categorySelect.removeEventListener('change', onCategoryChange);
+    window.removeEventListener('popstate', onPopState);
+    container.replaceChildren();
+  };
 }

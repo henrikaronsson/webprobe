@@ -60,19 +60,23 @@ function clearNavigation(container: HTMLElement): void {
 }
 
 export function renderThemeToggle(container: HTMLElement): () => void {
+  const label = () => (document.documentElement.dataset.theme === 'dark' ? 'Dark' : 'Light');
+
   const btn = el(
     'button',
     {
       type: 'button',
       className: 'btn',
-      'aria-label': 'Toggle dark/light theme',
+      'aria-label': `Current theme: ${label()}. Click to switch.`,
     },
-    'Theme',
+    label(),
   );
 
   container.append(btn);
 
   return on(btn, 'click', () => {
     toggleTheme();
+    btn.textContent = label();
+    btn.setAttribute('aria-label', `Current theme: ${label()}. Click to switch.`);
   });
 }
