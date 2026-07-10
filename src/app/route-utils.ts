@@ -45,3 +45,15 @@ export function getRouteParams(routes: Route[]): Record<string, string> {
 export function getRouteQuery(): URLSearchParams {
   return parseHash().query;
 }
+
+export function buildHashPath(pathname: string, query?: URLSearchParams): string {
+  const qs = query?.toString();
+  return qs ? `${pathname}?${qs}` : pathname;
+}
+
+/** Updates the hash query string without firing hashchange (avoids full page remount). */
+export function replaceRouteQuery(query: URLSearchParams): void {
+  const { pathname } = parseHash();
+  const nextQuery = query.toString() ? query : undefined;
+  history.replaceState(null, '', `#${buildHashPath(pathname, nextQuery)}`);
+}

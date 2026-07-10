@@ -12,7 +12,11 @@ No Angular. No React. No Vue. No backend.
 - **Labs** — interactive, lazy-loaded browser experiments
 - **Benchmarks** — small, transparent local benchmarks with clear limitations
 - **Links** — curated, opinionated developer resource catalog
-- **My Browser** — privacy-aware runtime overview
+- **My Browser** — runtime overview with optional public IP lookup via api.ipify.org
+
+## Privacy
+
+Most WebProbe features run entirely in your browser. The **My Browser** page automatically requests your public IP from [api.ipify.org](https://api.ipify.org) when opened — see [SECURITY.md](SECURITY.md) for details.
 
 ## Quick start
 
