@@ -35,12 +35,4 @@ Open [http://localhost:5173](http://localhost:5173).
 | `npm run lint`     | ESLint                             |
 | `npm run format`   | Prettier write                     |
 
-## Documentation
 
-- [Implementation plan](docs/PLAN.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [Agent guide](AGENTS.md)
-
-## License
-
-MIT — see [LICENSE](LICENSE).

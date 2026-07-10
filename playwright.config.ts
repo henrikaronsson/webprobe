@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// End-to-end browser test config.
+// Docs: https://playwright.dev/docs/test-configuration
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
